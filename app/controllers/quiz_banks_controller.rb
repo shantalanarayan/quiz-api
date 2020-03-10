@@ -1,5 +1,7 @@
-class QuizBanksController < ApplicationController
-  before_action :set_quiz_bank, only: [:show, :update, :destroy]
+# frozen_string_literal: true
+
+class QuizBanksController < ProtectedController
+  before_action :set_quiz_bank, only: %i[show update destroy]
 
   # GET /quiz_banks
   def index
@@ -15,7 +17,7 @@ class QuizBanksController < ApplicationController
 
   # POST /quiz_banks
   def create
-    @quiz_bank = QuizBank.new(quiz_bank_params)
+    @quiz_bank = current_user.quiz_banks.build(quiz_params)
 
     if @quiz_bank.save
       render json: @quiz_bank, status: :created, location: @quiz_bank
@@ -39,13 +41,15 @@ class QuizBanksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_quiz_bank
-      @quiz_bank = QuizBank.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def quiz_bank_params
-      params.require(:quiz_bank).permit(:questions, :correct_ans, :incorrect_ans1, :incorrect_ans2, :incorrect_ans3)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_quiz_bank
+    @quiz_bank = current_user.quiz_banks.build(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def quiz_bank_params
+    params.require(:quiz_bank).permit(:questions, :correct_ans, :incorrect_ans1,
+                                      :incorrect_ans2, :incorrect_ans3)
+  end
 end
