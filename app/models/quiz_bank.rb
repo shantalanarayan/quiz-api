@@ -1,0 +1,2 @@
+class QuizBank < ApplicationRecord
+end
