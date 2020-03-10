@@ -5,7 +5,7 @@ class QuizBanksController < ProtectedController
 
   # GET /quiz_banks
   def index
-    @quiz_banks = QuizBank.all
+    @quiz_banks = current_user.quizzes.find(params[:quiz_id]).quiz_banks.all
 
     render json: @quiz_banks
   end
@@ -17,7 +17,8 @@ class QuizBanksController < ProtectedController
 
   # POST /quiz_banks
   def create
-    @quiz_bank = current_user.quiz_banks.build(quiz_params)
+    @quiz_bank = current_user.quizzes.find(params[:quiz_id])
+                             .quiz_banks.build(quiz_bank_params)
 
     if @quiz_bank.save
       render json: @quiz_bank, status: :created, location: @quiz_bank
@@ -44,12 +45,14 @@ class QuizBanksController < ProtectedController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_quiz_bank
-    @quiz_bank = current_user.quiz_banks.build(params[:id])
+    @quiz_bank = current_user.quizzes.find(params[:quiz_id])
+                             .quiz_banks.build(params[:id])
   end
 
   # Only allow a trusted parameter "white list" through.
   def quiz_bank_params
     params.require(:quiz_bank).permit(:questions, :correct_ans, :incorrect_ans1,
-                                      :incorrect_ans2, :incorrect_ans3)
+                                      :incorrect_ans2, :incorrect_ans3,
+                                      :quiz_id)
   end
 end

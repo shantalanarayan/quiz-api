@@ -7,6 +7,6 @@ class QuizBankSerializer < ActiveModel::Serializer
   belongs_to :quiz
   # name this method anything that makes sense, then reference it above ^
   def editable
-    scope == object.user
+    scope == object.quiz.user
   end
 end

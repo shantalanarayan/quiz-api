@@ -49,6 +49,6 @@ class QuizzesController < ProtectedController
 
   # Only allow a trusted parameter "white list" through.
   def quiz_params
-    params.require(:quiz).permit(:topic)
+    params.require(:quiz).permit(:topic, :user_id, :quiz_bank)
   end
 end
