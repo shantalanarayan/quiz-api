@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class QuizzesController < ApplicationController
+class QuizzesController < ProtectedController
   before_action :set_quiz, only: %i[show update destroy]
 
   # GET /quizzes
@@ -17,7 +17,7 @@ class QuizzesController < ApplicationController
 
   # POST /quizzes
   def create
-    @quiz = Quiz.new(quiz_params)
+    @quiz = current_user.quizzes.build(quiz_params)
 
     if @quiz.save
       render json: @quiz, status: :created, location: @quiz
@@ -44,7 +44,7 @@ class QuizzesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_quiz
-    @quiz = Quiz.find(params[:id])
+    @quiz = current_user.quizzes.find(params[:id])
   end
 
   # Only allow a trusted parameter "white list" through.
