@@ -4,5 +4,5 @@ class User < ApplicationRecord
   include Authentication
   has_many :examples
   has_many :quizzes
-  has_many :quiz_banks, through: :quiz
+  has_many :quiz_banks, through: :quizzes
 end
