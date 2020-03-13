@@ -10,6 +10,13 @@ class QuizzesController < ProtectedController
     render json: @quizzes
   end
 
+  # GET /my_topics
+  def my_topics
+    @quizzes = current_user.quizzes.all
+
+    render json: @quizzes
+  end
+
   # GET /quizzes/1
   def show
     render json: @quiz

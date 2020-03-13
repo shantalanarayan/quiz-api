@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :examples, except: %i[new edit]
 
   # Custom routes
+  get '/my_topics' => 'quizzes#my_topics'
   get '/quiz_banks/:quiz_id/:id' => 'quiz_banks#show'
   get '/quiz_banks/:quiz_id' => 'quiz_banks#index'
   post '/quiz_banks/:quiz_id' => 'quiz_banks#create'
