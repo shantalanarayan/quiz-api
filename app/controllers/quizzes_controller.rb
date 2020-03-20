@@ -2,12 +2,13 @@
 
 class QuizzesController < ProtectedController
   before_action :set_quiz, only: %i[show update destroy]
+  skip_before_action :authenticate, only: %i[index show]
 
   # GET /quizzes
   def index
     @quizzes = Quiz.all
 
-    render json: @quizzes
+    render json: @quizzes, each_serializer: QuizTopicsSerializer, root: 'quiz_topics'
   end
 
   # GET /my_topics
@@ -51,7 +52,7 @@ class QuizzesController < ProtectedController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_quiz
-    @quiz = current_user.quizzes.find(params[:id])
+    @quiz = Quiz.find(params[:id])
   end
 
   # Only allow a trusted parameter "white list" through.
