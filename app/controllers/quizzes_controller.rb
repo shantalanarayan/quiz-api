@@ -6,9 +6,12 @@ class QuizzesController < ProtectedController
 
   # GET /quizzes
   def index
-    @quizzes = Quiz.all
+    # only return topics that has quiz_banks populated
+    @quizzes = Quiz.all.reject { |q| q.quiz_banks.empty? }
 
-    render json: @quizzes, each_serializer: QuizTopicsSerializer, root: 'quiz_topics'
+    render json: @quizzes,
+           each_serializer: QuizTopicsSerializer,
+           root: 'quiz_topics'
   end
 
   # GET /my_topics
